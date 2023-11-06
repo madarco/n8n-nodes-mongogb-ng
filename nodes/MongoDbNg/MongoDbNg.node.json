@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-mongodb-ng.mongoDb",
+	"node": "n8n-nodes-mongodb-ng2.mongoDbNg",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": [

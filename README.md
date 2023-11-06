@@ -1,18 +1,6 @@
 # n8n-nodes-mongogb-ng
 
-![n8n.io - Workflow Automation](https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png)
-
-[n8n](https://www.n8n.io) node for interacting with MongoDB databases.
-
-This module was created based on: https://github.com/n8n-io/n8n/tree/master/packages/nodes-base/nodes/MongoDb
-
-## Node Reference
-
-* Operations
-    * 
-
-* Options
-    * git 
+Simple N8N module to fix the bug that insertMany stops on the first failed document regardless of continueOnFail node setting
 
 ## License
 
