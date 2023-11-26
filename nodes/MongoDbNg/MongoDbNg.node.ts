@@ -122,8 +122,10 @@ export class MongoDbNg implements INodeType {
 				const queryParameter = JSON.parse(
 					this.getNodeParameter('query', 0) as string,
 				) as IDataObject;
+				const options = this.getNodeParameter('options', 0);
+				const idAsObjectId = options.idAsObjectId as boolean;
 
-				if (queryParameter._id && typeof queryParameter._id === 'string') {
+				if (idAsObjectId && queryParameter._id && typeof queryParameter._id === 'string' && ObjectId.isValid(queryParameter._id)) {
 					queryParameter._id = new ObjectId(queryParameter._id);
 				}
 
@@ -166,8 +168,14 @@ export class MongoDbNg implements INodeType {
 				const queryParameter = JSON.parse(
 					this.getNodeParameter('query', 0) as string,
 				) as IDataObject;
+				
+				const options = this.getNodeParameter('options', 0);
+				const idAsObjectId = options.idAsObjectId as boolean;
+				const limit = options.limit as number;
+				const skip = options.skip as number;
+				const sort = options.sort && (JSON.parse(options.sort as string) as Sort);
 
-				if (queryParameter._id && typeof queryParameter._id === 'string') {
+				if (idAsObjectId && queryParameter._id && typeof queryParameter._id === 'string') {
 					queryParameter._id = new ObjectId(queryParameter._id);
 				}
 
@@ -175,10 +183,6 @@ export class MongoDbNg implements INodeType {
 					.collection(this.getNodeParameter('collection', 0) as string)
 					.find(queryParameter as unknown as Document);
 
-				const options = this.getNodeParameter('options', 0);
-				const limit = options.limit as number;
-				const skip = options.skip as number;
-				const sort = options.sort && (JSON.parse(options.sort as string) as Sort);
 				if (skip > 0) {
 					query = query.skip(skip);
 				}
@@ -216,12 +220,16 @@ export class MongoDbNg implements INodeType {
 				: undefined;
 
 			const updateItems = prepareItems(items, fields, updateKey, useDotNotation, dateFields);
+			const options = this.getNodeParameter('options', 0);
+			const idAsObjectId = options.idAsObjectId as boolean;
 
 			for (const item of updateItems) {
 				try {
 					const filter = { [updateKey]: item[updateKey] };
 					if (updateKey === '_id') {
-						filter[updateKey] = new ObjectId(item[updateKey] as string);
+						if (idAsObjectId) {
+							filter[updateKey] = new ObjectId(item[updateKey] as string);
+						}
 						delete item._id;
 					}
 
@@ -256,12 +264,16 @@ export class MongoDbNg implements INodeType {
 				: undefined;
 
 			const updateItems = prepareItems(items, fields, updateKey, useDotNotation, dateFields);
+			const options = this.getNodeParameter('options', 0);
+			const idAsObjectId = options.idAsObjectId as boolean;
 
 			for (const item of updateItems) {
 				try {
 					const filter = { [updateKey]: item[updateKey] };
-					if (updateKey === '_id') {
-						filter[updateKey] = new ObjectId(item[updateKey] as string);
+					if (updateKey === '_id' && ObjectId.isValid(item[updateKey] as string)) {
+						if (idAsObjectId) { 
+							filter[updateKey] = new ObjectId(item[updateKey] as string);
+						}
 						delete item._id;
 					}
 
@@ -329,11 +341,16 @@ export class MongoDbNg implements INodeType {
 
 			const updateItems = prepareItems(items, fields, updateKey, useDotNotation, dateFields);
 
+			const options = this.getNodeParameter('options', 0);
+			const idAsObjectId = options.idAsObjectId as boolean;
+
 			for (const item of updateItems) {
 				try {
 					const filter = { [updateKey]: item[updateKey] };
 					if (updateKey === '_id') {
-						filter[updateKey] = new ObjectId(item[updateKey] as string);
+						if (idAsObjectId) {
+							filter[updateKey] = new ObjectId(item[updateKey] as string);
+						}
 						delete item._id;
 					}
 

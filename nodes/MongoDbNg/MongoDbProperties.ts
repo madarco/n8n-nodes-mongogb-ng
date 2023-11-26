@@ -83,6 +83,29 @@ export const nodeProperties: INodeProperties[] = [
 		required: true,
 		description: 'MongoDB aggregation pipeline query in JSON format',
 	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				operation: ['aggregate'],
+			},
+		},
+		placeholder: 'Add Option',
+		default: {},
+		options: [
+			{
+				displayName: '_id as ObjectId',
+				name: 'idAsObjectId',
+				type: 'boolean',
+				default: true,
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-limit
+				description:
+					'Automatically convert _id filed as ObjectId. If false, _id will be left as string',
+			},
+		],
+	},
 
 	// ----------------------------------
 	//         delete
@@ -150,6 +173,15 @@ export const nodeProperties: INodeProperties[] = [
 				default: '{}',
 				placeholder: '{ "field": -1 }',
 				description: 'A JSON that defines the sort order of the result set',
+			},
+			{
+				displayName: '_id as ObjectId',
+				name: 'idAsObjectId',
+				type: 'boolean',
+				default: true,
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-limit
+				description:
+					'Automatically convert _id filed as ObjectId. If false, _id will be left as string',
 			},
 		],
 	},
@@ -256,6 +288,15 @@ export const nodeProperties: INodeProperties[] = [
 				type: 'boolean',
 				default: false,
 				description: 'Whether to use dot notation to access date fields',
+			},
+			{
+				displayName: '_id as ObjectId',
+				name: 'idAsObjectId',
+				type: 'boolean',
+				default: true,
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-limit
+				description:
+					'Automatically convert _id filed as ObjectId. If false, _id will be left as string',
 			},
 		],
 	},
